@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Would You Rather</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background-color: black;
+      color: white;
+      text-align: center;
+      font-size: 40px;
+      padding: 20px 0;
+    }
+
+    .container {
+      display: flex;
+      height: calc(100% - 80px);
+      width: 100%;
+    }
+
+    .choice {
+      width: 50%;
+      height: 100%;
+      font-size: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      position: relative;
+      padding: 20px;
+    }
+
+    .choice:hover {
+      transform: translateY(-10px);
+    }
+
+    .choice-left {
+      background-color: red;
+      color: white;
+    }
+
+    .choice-right {
+      background-color: blue;
+      color: white;
+    }
+
+    .percentage {
+      font-size: 35px;
+      margin-top: 40px;
+      display: none;
+    }
+
+    .next-button {
+      padding: 15px 30px;
+      font-size: 24px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      display: none;
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .next-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Would you rather</div>
+
+  <div class="container">
+    <div class="choice choice-left" id="leftChoice" onclick="vote('left')">
+      <div class="choice-text" id="leftText">Be a genius</div>
+      <div id="leftPercentage" class="percentage">0%</div>
+    </div>
+    <div class="choice choice-right" id="rightChoice" onclick="vote('right')">
+      <div class="choice-text" id="rightText">Be a millionaire</div>
+      <div id="rightPercentage" class="percentage">0%</div>
+    </div>
+  </div>
+
+  <button id="nextButton" class="next-button" onclick="nextChoice()">Next</button>
+
+  <script>
+    let isVoted = false;
+    const nextButton = document.getElementById("nextButton");
+
+    function vote(choice) {
+      if (isVoted) return;
+      isVoted = true;
+
+      let left = (Math.random() * 40 + 30);
+      left = parseFloat(left.toFixed(1));
+      let right = parseFloat((100 - left).toFixed(1));
+
+      document.getElementById("leftPercentage").style.display = "block";
+      document.getElementById("rightPercentage").style.display = "block";
+      animatePercentage("leftPercentage", 0, left);
+      animatePercentage("rightPercentage", 0, right);
+
+      setTimeout(() => {
+        nextButton.style.display = 'block';
+      }, 2000);
+    }
+
+    function animatePercentage(id, start, end) {
+      const element = document.getElementById(id);
+      let current = start;
+      const step = (end - start) / 40;
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= end) {
+          current = end;
+          clearInterval(interval);
+        }
+        element.innerText = current.toFixed(1) + "%";
+      }, 20);
+    }
+
+    function nextChoice() {
+      isVoted = false;
+      nextButton.style.display = "none";
+
+      const leftPercentage = document.getElementById("leftPercentage");
+      const rightPercentage = document.getElementById("rightPercentage");
+
+      leftPercentage.style.display = "none";
+      rightPercentage.style.display = "none";
+      leftPercentage.innerText = "0%";
+      rightPercentage.innerText = "0%";
+
+      const choices = [
+        ["Be a genius", "Be a millionaire"],
+        ["Fly anywhere instantly", "Be invisible"],
+        ["Know the future", "Change the past"],
+        ["Control time", "Control minds"],
+        ["Have unlimited food", "Have unlimited money"],
+        ["Live in a mansion", "Travel the world forever"],
+        ["Talk to animals", "Speak all human languages"],
+        ["Never need to sleep", "Never feel pain"],
+        ["Be famous", "Be respected by all"],
+        ["Live 200 years", "Live one perfect day forever"],
+        ["Lose all your money", "Lose all your memories"],
+        ["Fight a lion", "Fight a bear"],
+        ["Be stuck in the past", "Be stuck in the future"],
+        ["Always know the truth", "Always win arguments"],
+        ["Be able to teleport", "Be able to fly"],
+        ["Have one wish granted", "Have three rules you can break forever"],
+        ["Work your dream job", "Never have to work again"],
+        ["Have no emotions", "Feel everything extremely"],
+        ["Always be 10 minutes late", "Always be 20 minutes early"],
+        ["Have super strength", "Have super intelligence"],
+        ["Always tell the truth", "Always get away with lies"],
+        ["Be allergic to sunlight", "Be allergic to people"],
+        ["Forget who you are", "Forget everyone else"],
+        ["Lose your sight", "Lose your hearing"],
+        ["Live without music", "Live without movies"],
+        ["Be alone forever", "Be surrounded by people you dislike"],
+        ["Eat only your favorite food forever", "Never eat your favorite food again"],
+        ["Be rich but unhappy", "Be poor but happy"],
+        ["Be stuck on an island with no food", "Be stuck in a city with no people"],
+        ["Be able to read minds", "Be able to speak to ghosts"],
+        ["Only whisper forever", "Only shout forever"],
+        ["Have a rewind button", "Have a pause button"],
+        ["Be a hero everyone hates", "Be a villain everyone loves"],
+        ["Travel the galaxy", "Explore the ocean depths"],
+        ["Have an unlimited phone battery", "Have unlimited Wi-Fi everywhere"],
+        ["Have free flights forever", "Have free food forever"],
+        ["Be unable to lie", "Be lied to forever"],
+        ["Have perfect skin", "Have a perfect body"],
+        ["Have your dream house", "Have your dream car"],
+        ["Have unlimited books", "Have unlimited movies"],
+        ["Win the lottery", "Live twice as long"],
+        ["Be a master of one skill", "Be decent at everything"],
+        ["Live in a video game", "Live in a movie"],
+        ["Be the smartest in the room", "Be the funniest in the room"],
+        ["Have a personal robot assistant", "Have a flying car"],
+        ["Own a private island", "Own a skyscraper"],
+        ["Never get tired", "Never get bored"],
+        ["Be able to stop time", "Be able to reverse time"],
+        ["Find true love", "Find true purpose"],
+        ["Forget your worst memory", "Relive your best memory forever"]
+      ];
+
+      const index = Math.floor(Math.random() * choices.length);
+      document.getElementById("leftText").innerText = choices[index][0];
+      document.getElementById("rightText").innerText = choices[index][1];
+    }
+  </script>
+</body>
+</html>
